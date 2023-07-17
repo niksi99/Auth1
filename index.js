@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser')
 
 const authRoutes = require('./routes/authRoutes');
 
@@ -7,6 +8,7 @@ const app = express();
 
 app.use(express.static('public'));
 app.use(express.json());
+app.use(cookieParser());
 
 app.set('view engine', 'ejs')
 
@@ -19,3 +21,16 @@ mongoose.connect(database, {
   .catch((error) => console.error(error))
 
 app.use(authRoutes);
+
+app.get('/set-cookies', (req, res) => {
+  //res.setHeader('Set-Cookie', 'newUser=true');
+  res.cookie('newUser', false)
+  res.cookie('newSwimmer', true, { maxAge: 1000 * 60 * 60 * 24, httpOnly: true});
+  res.send('You got the cookiewq');
+})
+
+app.get('/read-cookies', (req, res) => {
+  const kookies = req.cookies;
+  console.log(kookies);
+  res.json(kookies);
+})
