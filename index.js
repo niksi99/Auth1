@@ -1,9 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+const authRoutes = require('./routes/authRoutes');
+
 const app = express();
 
 app.use(express.static('public'));
+app.use(express.json());
 
 app.set('view engine', 'ejs')
 
@@ -15,6 +18,4 @@ mongoose.connect(database, {
 }).then((result) => app.listen(3000))
   .catch((error) => console.error(error))
 
-app.get("/", (req, res) => {
-    res.render("home");
-})
+app.use(authRoutes);
