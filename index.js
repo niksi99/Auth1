@@ -22,15 +22,33 @@ mongoose.connect(database, {
 
 app.use(authRoutes);
 
-app.get('/set-cookies', (req, res) => {
-  //res.setHeader('Set-Cookie', 'newUser=true');
-  res.cookie('newUser', false)
-  res.cookie('newSwimmer', true, { maxAge: 1000 * 60 * 60 * 24, httpOnly: true});
-  res.send('You got the cookiewq');
-})
 
-app.get('/read-cookies', (req, res) => {
-  const kookies = req.cookies;
-  console.log(kookies);
-  res.json(kookies);
-})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//cookies
+// app.get('/set-cookies', (req, res) => {
+//   //res.setHeader('Set-Cookie', 'newUser=true');
+//   res.cookie('newUser', false)
+//   res.cookie('newSwimmer', true, { maxAge: 1000 * 60 * 60 * 24, httpOnly: true});
+//   res.send('You got the cookiewq');
+// })
+
+// app.get('/read-cookies', (req, res) => {
+//   const kookies = req.cookies;
+//   console.log(kookies);
+//   res.json(kookies);
+// })
