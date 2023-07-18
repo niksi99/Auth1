@@ -8,6 +8,17 @@ const errorsHandler = (err) => {
         password: '',
     }
 
+    //incorect email
+    if(err.message === 'Incorect email') {
+        errors.email = "That email is not registered"
+        //return errors
+    }
+    //incorect password
+    if(err.message === 'Incorect password') {
+        errors.password = "That password is incorect"
+        //return errors
+    }
+
     //duplicate error code
     if(err.code === 11000) {
         errors.email = "This user already exists"
@@ -59,7 +70,21 @@ module.exports.signup_post = async (req, res) => {
 }
 
 module.exports.login_post = async (req, res) => {
-    res.send('user login');
+    const { email, password } = req.body
+
+    try {
+        const user = await User.login(email, password)
+
+        const token = createToken(user._id)
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAgeInSec * 1000 })
+
+        res.status(200).json({user: user._id})
+    }
+    catch(error) {
+        const errors = errorsHandler(error);
+        res.status(400).json({ errors })
+    }
+    //res.send('user login');
 }
 
 module.exports.logout = (req, res) => {
