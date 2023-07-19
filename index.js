@@ -3,8 +3,10 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser')
 
 const authRoutes = require('./routes/authRoutes');
+const basicRoutes = require('./routes/basicRoutes');
 
 const app = express();
+
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -21,6 +23,7 @@ mongoose.connect(database, {
   .catch((error) => console.error(error))
 
 app.use(authRoutes);
+app.use(basicRoutes);
 
 
 

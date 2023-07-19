@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/User')
 
 const requiredAuth = (req, res, next) => {
 
@@ -20,4 +21,35 @@ const requiredAuth = (req, res, next) => {
     }
 }
 
-module.exports = requiredAuth 
+const checkCurrentUser = (req, res, next) => {
+    const token = req.cookies.jwt;
+
+    
+    if (token) {
+    jwt.verify(token, 'nixy secret', async (err, decodedToken) => {
+        if (err) {
+            let user = {
+                email: ''
+            }
+            res.locals.user = user;
+            next();
+        } 
+        else {
+            let user = await User.findById(decodedToken.id);
+            res.locals.user = user;
+            next();
+        }
+        });
+    } 
+    else {
+        let user = {
+            email: ''
+        }
+        res.locals.user = user;
+        next();
+    }
+}
+   
+
+module.exports = requiredAuth;
+module.exports = checkCurrentUser; 
